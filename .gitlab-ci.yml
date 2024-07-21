@@ -1,0 +1,8 @@
+stage:
+    - build
+
+stage_build:
+    stage: build
+    image: docker:dind
+    script:
+      - echo '123'
