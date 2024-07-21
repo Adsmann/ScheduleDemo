@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.models.User;
 import com.example.demo.models.UserInfo;
+import com.example.demo.repo.SQDRepo;
+import com.example.demo.repo.UniRepo;
 import com.example.demo.repo.UserInfoRepo;
 import com.example.demo.repo.UserRepo;
 import com.example.demo.service.UserService;
@@ -17,15 +19,17 @@ public class UserController {
     private final UserService userService;
     private final UserRepo userRepo;
     private final UserInfoRepo userInfoRepo;
+    private final UniRepo uniRepo;
+    private final SQDRepo sqdRepo;
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "log";
     }
 
     @GetMapping("/registration")
     public String registration() {
-        return "registration";
+        return "reg";
     }
 
     @PostMapping("/registration")
@@ -39,16 +43,18 @@ public class UserController {
         model.addAttribute("user", user);
         UserInfo userInfo = userInfoRepo.findUserInfoById(user.getUserinfoid());
         model.addAttribute("info", userInfo);
-        return "lc";
+        model.addAttribute("unis", uniRepo.findAll());
+        model.addAttribute("userGs", sqdRepo.findSQDSByUni(userInfo.getUni()));
+        return "profile";
     }
 
     @PostMapping("/office/uni/{id}")
     public String officeUni(@AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam String uni){
-        if(uni != null && !uni.isEmpty()) {
-            UserInfo userInfo = userInfoRepo.findUserInfoById(user.getUserinfoid());
-            System.out.println(userInfo);
-            userInfoRepo.save(userInfo);
-        }
+        UserInfo userInfo = userInfoRepo.findUserInfoById(user.getUserinfoid());
+        System.out.println(userInfo);
+        userInfo.setUni(uni);
+        userInfoRepo.save(userInfo);
+
         return "redirect:/office";
     }
 

@@ -1,0 +1,154 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+  }
+  
+  html {
+    height: 100%;
+  }
+  
+  body {
+    margin: 0;
+    background: #466969;
+  }
+  
+  .des-1 {
+    display: flex;
+    align-items: center;
+    height: 13vh;
+    width: 100%;
+    margin: 0;
+    position: relative;
+  }
+  
+  .tb_1 {
+    display: flex;
+    align-items: center;
+    background: rgb(0, 0, 0);
+    width: 100%;
+    height: 100%;
+    padding: 0 2%;
+  }
+  
+  .logo {
+    height: 50px;
+  }
+  
+  .nav-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .nav-link {
+    font-size: 1.5em;
+    border-radius: 14px;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    transition-duration: 0.3s;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+  }
+  
+  .nav-link:focus {
+    outline: none;
+  }
+  
+  .nav-link:after {
+    content: none;
+  }
+  
+  @media (max-width: 768px) {
+    .nav-link {
+      font-size: 1.2em;
+      padding: 0.4em 0.8em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .tb_1 {
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nav-link {
+      font-size: 1em;
+      padding: 0.3em 0.6em;
+    }
+  }
+  
+  .container {
+    margin: 20px;
+    padding: 20px;
+    background: #f0f0f0;
+    border-radius: 20px;
+  }
+  
+  h1 {
+    font-family: monospace;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .day {
+    margin-bottom: 40px;
+  }
+  
+  .day h2 {
+    font-family: monospace;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .schedule-item {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-family: monospace;
+    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .schedule-item div {
+    margin-bottom: 5px;
+  }
+  
+  .admin-section {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .sub-links {
+    display: flex;
+    gap: 20px;
+    margin-left: 10px;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sub-links a {
+    color: white;
+    text-decoration: none;
+    margin: 2px 0;
+  }
+  
+  .sub-links a:hover {
+    text-decoration: underline;
+  }
+  

@@ -4,9 +4,7 @@ import com.example.demo.models.DaySchedule;
 import com.example.demo.models.Subject;
 import com.example.demo.models.User;
 import com.example.demo.models.UserInfo;
-import com.example.demo.repo.DayScheduleRepo;
-import com.example.demo.repo.SubjectRepo;
-import com.example.demo.repo.UserInfoRepo;
+import com.example.demo.repo.*;
 import com.example.demo.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +26,8 @@ public class SubjectController {
     private final SubjectRepo subjectRepo;
     private final DayScheduleRepo dayScheduleRepo;
     private final UserInfoRepo userInfoRepo;
+    private final SQDRepo sqdRepo;
+    private final UniRepo uniRepo;
 
 
     @GetMapping("/")
@@ -42,7 +42,7 @@ public class SubjectController {
         List<Subject> subjectList6 = new java.util.ArrayList<>(List.of());
 
         for(DaySchedule daySchedule : dayScheduleRepo.findDayScheduleByUserGAndUni(userInfo.getUserG(), userInfo.getUni())) {
-            if(Objects.equals(daySchedule.getName(), "M")){
+            if(Objects.equals(daySchedule.getName(), "Понедельник")){
                 subjectList1.add(subjectRepo.findSubjectById(daySchedule.getLesson1()));
                 subjectList1.add(subjectRepo.findSubjectById(daySchedule.getLesson2()));
                 subjectList1.add(subjectRepo.findSubjectById(daySchedule.getLesson3()));
@@ -52,7 +52,7 @@ public class SubjectController {
                 subjectList1.add(subjectRepo.findSubjectById(daySchedule.getLesson7()));
                 subjectList1.add(subjectRepo.findSubjectById(daySchedule.getLesson8()));
             }
-            if(Objects.equals(daySchedule.getName(), "Tu")){
+            if(Objects.equals(daySchedule.getName(), "Вторник")){
                 subjectList2.add(subjectRepo.findSubjectById(daySchedule.getLesson1()));
                 subjectList2.add(subjectRepo.findSubjectById(daySchedule.getLesson2()));
                 subjectList2.add(subjectRepo.findSubjectById(daySchedule.getLesson3()));
@@ -62,7 +62,7 @@ public class SubjectController {
                 subjectList2.add(subjectRepo.findSubjectById(daySchedule.getLesson7()));
                 subjectList2.add(subjectRepo.findSubjectById(daySchedule.getLesson8()));
             }
-            if(Objects.equals(daySchedule.getName(), "W")){
+            if(Objects.equals(daySchedule.getName(), "Среда")){
                 subjectList3.add(subjectRepo.findSubjectById(daySchedule.getLesson1()));
                 subjectList3.add(subjectRepo.findSubjectById(daySchedule.getLesson2()));
                 subjectList3.add(subjectRepo.findSubjectById(daySchedule.getLesson3()));
@@ -72,7 +72,7 @@ public class SubjectController {
                 subjectList3.add(subjectRepo.findSubjectById(daySchedule.getLesson7()));
                 subjectList3.add(subjectRepo.findSubjectById(daySchedule.getLesson8()));
             }
-            if(Objects.equals(daySchedule.getName(), "Th")){
+            if(Objects.equals(daySchedule.getName(), "Четверг")){
                 subjectList4.add(subjectRepo.findSubjectById(daySchedule.getLesson1()));
                 subjectList4.add(subjectRepo.findSubjectById(daySchedule.getLesson2()));
                 subjectList4.add(subjectRepo.findSubjectById(daySchedule.getLesson3()));
@@ -82,7 +82,7 @@ public class SubjectController {
                 subjectList4.add(subjectRepo.findSubjectById(daySchedule.getLesson7()));
                 subjectList4.add(subjectRepo.findSubjectById(daySchedule.getLesson8()));
             }
-            if(Objects.equals(daySchedule.getName(), "F")){
+            if(Objects.equals(daySchedule.getName(), "Пятница")){
                 subjectList5.add(subjectRepo.findSubjectById(daySchedule.getLesson1()));
                 subjectList5.add(subjectRepo.findSubjectById(daySchedule.getLesson2()));
                 subjectList5.add(subjectRepo.findSubjectById(daySchedule.getLesson3()));
@@ -92,7 +92,7 @@ public class SubjectController {
                 subjectList5.add(subjectRepo.findSubjectById(daySchedule.getLesson7()));
                 subjectList5.add(subjectRepo.findSubjectById(daySchedule.getLesson8()));
             }
-            if(Objects.equals(daySchedule.getName(), "Sa")){
+            if(Objects.equals(daySchedule.getName(), "Суббота")){
                 subjectList6.add(subjectRepo.findSubjectById(daySchedule.getLesson1()));
                 subjectList6.add(subjectRepo.findSubjectById(daySchedule.getLesson2()));
                 subjectList6.add(subjectRepo.findSubjectById(daySchedule.getLesson3()));
@@ -109,26 +109,29 @@ public class SubjectController {
         model.addAttribute("listTh", subjectList4);
         model.addAttribute("listF", subjectList5);
         model.addAttribute("listSa", subjectList6);
-        return "hi";
+        return "schedule";
     }
 
-    @GetMapping("/admin/list")
+    @GetMapping("/edit-subject")
     public String list(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("list", subjectRepo.findAll());
-        return "list";
+        return "table-view";
     }
 
-    @GetMapping("/admin/create")
+    @GetMapping("/add-subject")
     public String createMain(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        return "createSubject";
+        model.addAttribute("unis", uniRepo.findAll());
+        model.addAttribute("userGS", sqdRepo.findAll());
+
+        return "admin";
     }
 
     @PostMapping("/admin/subject/create")
     public String createSubject(Subject subject) {
         scheduleService.saveSubject(subject);
-        return "redirect:/admin/create";
+        return "redirect:/add-subject";
     }
 
     @GetMapping("/admin/subject/{id}")
@@ -136,7 +139,9 @@ public class SubjectController {
         Subject subject = subjectRepo.findById(id).orElse(null);
         model.addAttribute("user", user);
         model.addAttribute("subject", subject);
-        return "setSubject";
+        model.addAttribute("unis", uniRepo.findAll());
+        model.addAttribute("userGS", sqdRepo.findAll());
+        return "custom-form-2";
     }
 
     @PostMapping("/admin/subject/{id}/set/1")

@@ -24,7 +24,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers("/registration").permitAll()
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers( "/public/**").permitAll()
                         .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated());
 

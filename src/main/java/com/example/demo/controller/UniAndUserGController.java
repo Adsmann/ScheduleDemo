@@ -22,17 +22,26 @@ public class UniAndUserGController {
     private final SQDRepo sqdRepo;
 
     @PostMapping("/admin/uni/create")
-    public String createUni(@RequestParam String name, Model model){
+    public String createUni(@RequestParam String name, @RequestParam String l1, @RequestParam String l2, @RequestParam String l3, @RequestParam String l4, @RequestParam String l5, @RequestParam String l6, @RequestParam String l7, @RequestParam String l8, Model model){
         Uni uni  = new Uni();
         uni.setName(name);
+        uni.setTime_lesson1(l1);
+        uni.setTime_lesson2(l2);
+        uni.setTime_lesson3(l3);
+        uni.setTime_lesson4(l4);
+        uni.setTime_lesson5(l5);
+        uni.setTime_lesson6(l6);
+        uni.setTime_lesson7(l7);
+        uni.setTime_lesson8(l8);
+
         uniRepo.save(uni);
         return "redirect:/admin/uni";
     }
 
-    @GetMapping("/admin/uni")
+    @GetMapping("/add-university")
     public String uni(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        return "uni";
+        return "add-university-2";
     }
 
     @PostMapping("/admin/group/create")
@@ -41,12 +50,13 @@ public class UniAndUserGController {
         sqd.setName(name);
         sqd.setUni(uni);
         sqdRepo.save(sqd);
-        return "redirect:/admin/group";
+        return "redirect:/add-group";
     }
 
-    @GetMapping("/admin/group")
+    @GetMapping("/add-group")
     public String group(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        return "sqd";
+        model.addAttribute("unis", uniRepo.findAll());
+        return "add-group";
     }
 }
